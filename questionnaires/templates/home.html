@@ -1,27 +1,34 @@
+{% extends "core/base.html" %}
+<!-- Etykieta strony -->
+{% block site_title %}
 
-    <!-- Etykieta strony -->
+<h4>
+    Strona główna
+</h4>
 
-    <h4>
-        Strona główna
-    </h4>
+{% endblock site_title %}
 
 
-    <!-- Zawartość strony -->
 
-    <div class="row">
-        <div class="col-sm-12">
-            <p>
-                <h2>
-                    Witaj w serwisie!
-                    <br />
-                </h2>
-                <h4>
-                    <small>
-                        <em>
-                            Zaloguj się lub utwórz nowe konto, aby przejść dalej.
-                        </em>
-                    </small>
-                </h4>
-            </p>
-        </div>
+<!-- Zawartość strony -->
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-12">
+        <p>
+            <h2>
+                Witaj w serwisie!
+                <br />
+            </h2>
+            <h4>
+                <small>
+                    <em>
+                        Zaloguj się lub utwórz nowe konto, aby przejść dalej.
+                    </em>
+                </small>
+            </h4>
+        </p>
     </div>
+</div>
+
+{% endblock content %}

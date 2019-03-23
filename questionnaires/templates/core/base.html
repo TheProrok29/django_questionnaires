@@ -2,136 +2,139 @@
 
 <!doctype html>
 <html lang="pl-PL">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Prosty serwis do tworzenia ankiet oraz ich udostępniania.">
-    <meta name="author" content="Tomasz Bogacki">
 
-    <title>
-       Ankiety
-    </title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Prosty serwis do tworzenia ankiet oraz ich udostępniania.">
+  <meta name="author" content="Tomasz Bogacki">
 
-    <!-- Plik CSS - Bootstrap -->
-    <link href="{% static 'css/dependencies/bootstrap.min.css' %}" rel="stylesheet">
+  <title>
+    Ankiety
+  </title>
 
-    <!-- Plik CSS - Aplikacja -->
-    <link href="{% static 'css/custom.css' %}" rel="stylesheet">
-  </head>
+  <!-- Plik CSS - Bootstrap -->
+  <link href="{% static 'css/dependencies/bootstrap.min.css' %}" rel="stylesheet">
 
-  <body>
+  <!-- Plik CSS - Aplikacja -->
+  <link href="{% static 'css/custom.css' %}" rel="stylesheet">
+</head>
 
-    <header>
+<body>
 
-      <!-- MENU -->
+  <header>
 
-      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="#">Ankiety</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav mr-auto">
+    <!-- MENU -->
 
-            <!-- Niezalogowany użytkownik -->
-            {% if not user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'login' %}">Zaloguj się</a>
-            </li>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="#">Ankiety</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
 
-            <li class="nav-item">
-              <a class="nav-link" href="">Utwórz konto</a>
-            </li>
-            {% else %}
-            <!-- Zalogowany użytkownik -->
-            <li class="nav-item">
-              <a class="nav-link" href="">Panel</a>
-            </li>
+          <!-- Niezalogowany użytkownik -->
+          {% if not user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Zaloguj się</a>
+          </li>
 
-            <li class="nav-item">
-              <a class="nav-link" href="">Ankiety</a>
-            </li>
+          <li class="nav-item">
+            <a class="nav-link" href="">Utwórz konto</a>
+          </li>
+          {% else %}
+          <!-- Zalogowany użytkownik -->
+          <li class="nav-item">
+            <a class="nav-link" href="">Panel</a>
+          </li>
 
-            <li class="nav-item">
-              <a class="nav-link" href="">Powiadomienia</a>
-            </li>
+          <li class="nav-item">
+            <a class="nav-link" href="">Ankiety</a>
+          </li>
 
-            <li class="nav-item">
-              <a class="nav-link" href="">Ustawienia</a>
-            </li>
+          <li class="nav-item">
+            <a class="nav-link" href="">Powiadomienia</a>
+          </li>
 
-            <li class="nav-item">
-              <a class="nav-link" href="">Wyloguj się</a>
-            </li>
-            {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="">Ustawienia</a>
+          </li>
 
-          </ul>
-          <div class="mt-2 mt-md-0 site-title">
+          <li class="nav-item">
+            <a class="nav-link" href="">Wyloguj się</a>
+          </li>
+          {% endif %}
 
-              <!-- Etykieta strony -->
+        </ul>
+        <div class="mt-2 mt-md-0 site-title">
 
-              {% block site_title %}
-              {% endblock %}
+          <!-- Etykieta strony -->
 
-          </div>
-
-        </div>
-      </nav>
-    </header>
-
-
-    <main role="main" class="container">
-
-      <!-- Zawartość strony -->
-
-      <div class="row">
-        <div class="col-sm-12 text-center messages">
-
-            <!-- Powiadomienia -->
-
-            {% if messages %}
-                {% for message in messages %}
-                    {% if message.tags == 'success' %}
-                    <div class="alert alert-success">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        {{ message }}
-                    </div>
-                    {% else %}
-                    <div class="alert alert-danger">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        {{ message }}
-                    </div>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
+          {% block site_title %}
+          {% endblock %}
 
         </div>
+
       </div>
+    </nav>
+  </header>
 
 
-        <!-- Zawartość strony -->
+  <main role="main" class="container">
 
-        {% block content %}
-        {% endblock %}
+    <!-- Zawartość strony -->
 
-    </main>
+    <div class="row">
+      <div class="col-sm-12 text-center messages">
 
-    <footer class="footer">
-      <div class="container">
-        <span class="text-muted">Kurs Videopoint - Django Poziom Pierwszy</span>
+        <!-- Powiadomienia -->
+
+        {% if messages %}
+        {% for message in messages %}
+        {% if message.tags == 'success' %}
+        <div class="alert alert-success">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          {{ message }}
+        </div>
+        {% else %}
+        <div class="alert alert-danger">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          {{ message }}
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+
       </div>
-    </footer>
+    </div>
 
-    <!-- Plik JS - jQuery -->
-    <script src="{% static 'js/dependencies/jquery-3.3.1.slim.min.js' %}"></script>
 
-    <!-- Plik JS - Popper -->
-    <script src="{% static 'js/dependencies/popper.min.js' %}"></script>
+    <!-- Zawartość strony -->
 
-    <!-- Plik JS - Bootstrap -->
-    <script src="{% static 'js/dependencies/bootstrap.min.js' %}"></script>
+    {% block content %}
+    {% endblock %}
 
-    <!-- Plik JS - Aplikacja -->
-    <script src="{% static 'js/custom.js' %}"></script>
-  </body>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <span class="text-muted">Kurs Videopoint - Django Poziom Pierwszy</span>
+    </div>
+  </footer>
+
+  <!-- Plik JS - jQuery -->
+  <script src="{% static 'js/dependencies/jquery-3.3.1.slim.min.js' %}"></script>
+
+  <!-- Plik JS - Popper -->
+  <script src="{% static 'js/dependencies/popper.min.js' %}"></script>
+
+  <!-- Plik JS - Bootstrap -->
+  <script src="{% static 'js/dependencies/bootstrap.min.js' %}"></script>
+
+  <!-- Plik JS - Aplikacja -->
+  <script src="{% static 'js/custom.js' %}"></script>
+</body>
+
 </html>
