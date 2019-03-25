@@ -1,9 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
 from django.views import generic
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth.decorators import login_required
-from . import forms 
+from . import forms
+from django.contrib import messages
+from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth import update_session_auth_hash
 
 
 class SignUp(generic.CreateView):
@@ -15,9 +18,56 @@ class SignUp(generic.CreateView):
 @login_required
 def settings(request):
     kwargs = {}
-    kwargs['basic_data_change_form'] = forms.UserBasicDataChangeForm(prefix='basic_data_change_form', 
-    instance=request.user)
-    kwargs['password_change_form'] = forms.UserPasswordChangeForm(prefix='password_change_form') 
+    kwargs['basic_data_change_form'] = forms.UserBasicDataChangeForm(prefix='basic_data_change_form',
+                                                                     instance=request.user)
+    kwargs['password_change_form'] = forms.UserPasswordChangeForm(
+        prefix='password_change_form')
 
     return render(request, 'settings.html', kwargs)
-    
+
+
+@login_required
+def change_basic_data(request):
+    if request.method == 'POST':
+        form = forms.UserBasicDataChangeForm(data=request.POST,
+                                             prefix='basic_data_change_form', instance=request.user)
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Dane zostały zmienione.')
+    else:
+        messages.error(request, 'Formularz został wypełniony nieprawidłowo.')
+
+    return HttpResponseRedirect(reverse('settings'))
+
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = forms.UserPasswordChangeForm(data=request.POST,
+                                            prefix='password_change_form')
+
+        if form.is_valid():
+            cleaned = form.cleaned_data
+
+            old_password = cleaned['old_password']
+            password1 = cleaned['new_password_1']
+            password2 = cleaned['new_password_2']
+
+            if password1 == password2 and check_password(password=old_password,
+                                                         encoded=request.user.password,
+                                                         setter=make_password(password=old_password, salt=None,
+                                                                              hasher='default')):
+                user = request.user
+                user.password = make_password(password=password1,
+                                              salt=None,
+                                              hasher='default')
+                user.save()
+                update_session_auth_hash(request, user)
+                messages.success(request, 'Hasło zostało zmienione.')
+            else:
+                messages.error(
+                    request, 'Obecne hasło jest nieprawidłowe i/lub nowe hasła nie są zgodne.')
+        else:
+            messages.error(
+                request, 'Formularz został wypełniony nieprawidłowo.')
+    return HttpResponseRedirect(reverse(('settings')))
