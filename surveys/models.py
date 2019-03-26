@@ -51,4 +51,4 @@ class Answers(models.Model):
     first_name = models.CharField(verbose_name='Imię ankietowanego',
                                   max_length=80)
     answers = models.TextField(verbose_name='Odpowiedzi')
-    created = models.DateTimeField(verbose_name='Utworzono', auto_now_Add=True)
+    created = models.DateTimeField(verbose_name='Utworzono', auto_now_add=True)

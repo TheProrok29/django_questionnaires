@@ -1,3 +1,10 @@
 from django.shortcuts import render
+from .models import Survey
+from django.contrib.auth.decorators import login_required
 
-# Create your views here.
+
+@login_required
+def surveys(request):
+    kwargs = {}
+    kwargs['surveys'] = Survey.objects.filter(user=request.user)
+    return render(request, 'surveys.html', kwargs)
