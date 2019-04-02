@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
-from .models import Survey
+from .models import Survey, Questions, Answers
 from django.contrib.auth.decorators import login_required
 from . import forms
 from django.urls import reverse
@@ -37,3 +37,45 @@ def create(request):
                                                 }))
     messages.error(request, 'Niepoprawne wywołanie trasy')
     return HttpResponseRedirect(reverse('surveys'))
+
+
+@login_required
+def survey(request, survey_id):
+    try:
+        user_survey = Survey.objects.get(id=survey_id)
+
+        if request.method == 'GET':
+            kwargs = {}
+            kwargs['survey'] = user_survey
+            kwargs['questions'] = Questions.objects.filter(survey=user_survey)
+            kwargs['survey_edit_form'] = forms.SurveyCreationForm(prefix='survey_creation_form',
+                                                                  instance=user_survey)
+
+            return render(request, 'survey.html', kwargs)
+        elif request.method == 'POST':
+            form = forms.SurveyCreationForm(data=request.POST,
+                                            prefix='survey_creation_form',
+                                            instance=user_survey)
+
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Dane ankiety zostały zmienione')
+                return HttpResponseRedirect(reverse('survey',
+                                            kwargs={
+                    'survey_id': survey_id
+                }))
+
+    except Survey.DoesNotExist:
+        messages.error(request, 'Wybrana ankieta nie istnieje')
+        return HttpResponseRedirect(reverse('surveys'))
+
+    
+@login_required
+def delete(request, survey_id):
+    try:
+        user_survey = Survey.objects.get(id=survey_id)
+        user_survey.delete()
+        messages.success(request, 'Wybrana ankieta została usunięta')
+
+    except Survey.DoesNotExist:
+        messages.error(request, 'Wybrana ankieta nie istnieje')
