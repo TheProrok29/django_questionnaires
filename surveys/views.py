@@ -19,7 +19,7 @@ def create(request):
         kwargs = {}
         kwargs['survey_creation_form'] = forms.SurveyCreationForm(
             prefix='survey_creation_form')
-        return render(request, 'create.html'. kwargs)
+        return render(request, 'create.html', kwargs)
     elif request.method == 'POST':
         form = forms.SurveyCreationForm(data=request.POST,
                                         prefix='survey_creation_form')
