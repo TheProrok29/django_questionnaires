@@ -76,6 +76,8 @@ def delete(request, survey_id):
         user_survey = Survey.objects.get(id=survey_id)
         user_survey.delete()
         messages.success(request, 'Wybrana ankieta została usunięta')
+        return HttpResponseRedirect(reverse('surveys'))
 
     except Survey.DoesNotExist:
         messages.error(request, 'Wybrana ankieta nie istnieje')
+        return HttpResponseRedirect(reverse('surveys'))

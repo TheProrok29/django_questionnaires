@@ -6,7 +6,7 @@
 <!-- Etykieta strony -->
 
 <h4>
-    Ankieta nr
+    Ankieta nr {{ survey.id }}
 </h4>
 
 
@@ -28,12 +28,13 @@
         </small>
         <p class="padding-top-bottom-30">
             <!-- Nazwa oraz opis ankiety -->
-            <strong>Nazwa ankiety: </strong>
+            <strong>Nazwa ankiety: </strong>{{ survey.name }}
             <br />
             <strong>Opis: </strong>
             <br />
             <small>
                 <em>
+                {{ survey.description }}
                 </em>
             </small>
         </p>
@@ -43,7 +44,7 @@
         <button id="surveyEditButton" class="btn btn-success">Edytuj</button>
         <a href="" class="btn btn-secondary">Dodaj pytanie</a>
         <a href="" class="btn btn-info">Zobacz odpowiedzi</a>
-        <a href="" class="btn btn-danger">Usuń</a>
+        <a href="{% url 'delete_survey' survey.id %}" class="btn btn-danger">Usuń</a>
     </div>
     <hr>
 </div>
@@ -62,6 +63,8 @@
             <div class="col-md-3"></div>
             <div class="col-md-6">
                 <!-- Wyświetlenie formularza -->
+                {{ survey_edit_form.as_p }}
+                {% csrf_token %}
             </div>
         </div>
         <div class="row">
@@ -79,6 +82,8 @@
             Lista pytań
         </h3>
         <!-- Jeżeli istnieją jakieś pytania, wyświetlamy listę -->
+        {% if questions %}
+        
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead class="thead-dark">
@@ -92,20 +97,30 @@
                 </thead>
                 <tbody>
                     <!-- Lista pytań -->
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Pytanie</td>
-                        <td>Zamknięte</td>
+                    {% for question in questions  %}
+                     <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ question.name }}</td>
+                        <td>
+                        {% if question.q_type == 1 %}
+                        Otwarte
+                        {% else %}
+                        Zamknięte
+                        {% endif %}
+                        </td>
                         <td><small>Opis</small></td>
                         <td class="text-right"><a href="" class="btn btn-danger btn-sm">Usuń</a></td>
                     </tr>
+                    {% endfor %}   
                 </tbody>
             </table>
         </div>
         <!-- W przeciwnym wypadku informujemy użytkownika o braku pytań -->
+         {% else %}
         <p class="text-center">
             <small>Obecnie nie posiadasz żadnych pytań do tej ankiety.</small>
         </p>
+        {% endif %}
     </div>
     <hr>
 </div>
