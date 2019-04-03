@@ -6,3 +6,8 @@ class SurveyCreationForm(forms.ModelForm):
         model = models.Survey
         fields = ['name', 'description']
 
+class QuestionCreationForm(forms.ModelForm):
+    class Meta:
+        model = models.Questions
+        fields = ['q_type', 'name', 'description']
+

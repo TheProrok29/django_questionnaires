@@ -42,7 +42,7 @@
     <div class="col-md-6 text-right">
         <!-- Menu ankiety -->
         <button id="surveyEditButton" class="btn btn-success">Edytuj</button>
-        <a href="" class="btn btn-secondary">Dodaj pytanie</a>
+        <a href="{% url 'create_question' survey.id %}" class="btn btn-secondary">Dodaj pytanie</a>
         <a href="" class="btn btn-info">Zobacz odpowiedzi</a>
         <a href="{% url 'delete_survey' survey.id %}" class="btn btn-danger">Usuń</a>
     </div>
