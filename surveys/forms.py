@@ -8,6 +8,6 @@ class SurveyCreationForm(forms.ModelForm):
 
 class QuestionCreationForm(forms.ModelForm):
     class Meta:
-        model = models.Questions
+        model = models.Question
         fields = ['q_type', 'name', 'description']
 

@@ -24,7 +24,7 @@ QUESTION_TYPE_CHOICES = (
 )
 
 
-class Questions(models.Model):
+class Question(models.Model):
     class Meta:
         verbose_name = 'Pytanie'
         verbose_name_plural = 'Pytania'
@@ -39,7 +39,7 @@ class Questions(models.Model):
         verbose_name='Opis', max_length=2000, null=True, blank=True)
 
 
-class Answers(models.Model):
+class Answer(models.Model):
     class Meta:
         verbose_name = 'Odpowiedź'
         verbose_name_plural = 'Odpowiedzi'

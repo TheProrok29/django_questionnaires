@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
-from .models import Survey, Questions, Answers
+from .models import Survey, Question, Answer
 from django.contrib.auth.decorators import login_required
 from . import forms
 from django.urls import reverse
@@ -47,7 +47,7 @@ def survey(request, survey_id):
         if request.method == 'GET':
             kwargs = {}
             kwargs['survey'] = user_survey
-            kwargs['questions'] = Questions.objects.filter(survey=user_survey)
+            kwargs['questions'] = Question.objects.filter(survey=user_survey)
             kwargs['survey_edit_form'] = forms.SurveyCreationForm(prefix='survey_creation_form',
                                                                   instance=user_survey)
 
@@ -118,9 +118,48 @@ def delete_question(request, survey_id, question_id):
         survey_question = Question.objects.get(id=question_id)
         survey_question.delete()
         messages.success(request, 'Wybrane pytanie zostało usunięte.')
-    except Questions.DoesNotExist:
+    except Question.DoesNotExist:
         messages.error(request, 'Wybrane pytanie nie istnieje.')
 
     return HttpResponseRedirect(reverse('survey', kwargs={
         'survey_id': survey_id
     }))
+
+
+def share(request, survey_id):
+    try:
+        kwargs = {}
+        user_survey = Survey.objects.get(id=survey_id)
+        survey_questions = Question.objects.filter(survey_id=survey_id)
+
+        if request.method == 'GET':
+            kwargs['survey'] = user_survey
+            kwargs['questions'] = survey_questions
+            return render(request, 'share.html', kwargs)
+        elif request.method == 'POST':
+            first_name = request.POST['first-name']
+            answers = "<p>"
+            for question in survey_questions:
+                answers += 'Pytanie: %s <br /> Odpowiedź: <em>%s' % (question.name,
+                                                                     request.POST.get(str(question.id), 'Brak'))
+
+                answers += '</em><br /><br />'
+                answers += '</p>'
+
+                new_answer = Answer()
+                new_answer.user = user_survey.user
+                new_answer.survey = user_survey
+                new_answer.first_name = first_name
+                new_answer.answers = answers
+                new_answer.save()
+
+                messages.success(
+                    request, 'Dziękujemy, Twoje odpowiedzi zostały przesłane.')
+                return HttpResponseRedirect(reverse('share-survey',
+                                                    kwargs={
+                                                        'survey_id': user_survey.id
+                                                    }))
+
+    except Survey.DoesNotExist:
+        messages.error(request, 'Wybrana ankieta nie istnieje.')
+        return HttpResponseRedirect(reverse('home'))

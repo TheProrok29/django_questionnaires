@@ -24,6 +24,7 @@
         <!-- Link do udostępniania -->
         <small>
             <em>
+            {{ request.get_host }}{% url 'share-survey' survey.id %}
             </em>
         </small>
         <p class="padding-top-bottom-30">
@@ -42,9 +43,9 @@
     <div class="col-md-6 text-right">
         <!-- Menu ankiety -->
         <button id="surveyEditButton" class="btn btn-success">Edytuj</button>
-        <a href="{% url 'create_question' survey.id %}" class="btn btn-secondary">Dodaj pytanie</a>
+        <a href="{% url 'create-question' survey.id %}" class="btn btn-secondary">Dodaj pytanie</a>
         <a href="" class="btn btn-info">Zobacz odpowiedzi</a>
-        <a href="{% url 'delete_survey' survey.id %}" class="btn btn-danger">Usuń</a>
+        <a href="{% url 'delete-survey' survey.id %}" class="btn btn-danger">Usuń</a>
     </div>
     <hr>
 </div>
@@ -108,7 +109,7 @@
                         Zamknięte
                         {% endif %}
                         </td>
-                        <td><small>Opis</small></td>
+                        <td><small>{{ question.description }}</small></td>
                         <td class="text-right"><a href="" class="btn btn-danger btn-sm">Usuń</a></td>
                     </tr>
                     {% endfor %}   
