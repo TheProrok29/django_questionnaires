@@ -8,5 +8,6 @@ urlpatterns = [
     path('<int:survey_id>/delete/', views.delete, name='delete-survey'),
     path('<int:survey_id>/create-question', views.create_question, name='create-question'),
     path('<int:survey_id>/delete-question/<int:question_id>/', views.delete_question, name='delete-question'),
-    path('<int:survey_id>/share/', views.share, name='share-survey')
+    path('<int:survey_id>/share/', views.share, name='share-survey'),
+    path('<int:survey_id>/answers/', views.answers, name='answers')
 ]

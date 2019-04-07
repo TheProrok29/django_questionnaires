@@ -163,3 +163,23 @@ def share(request, survey_id):
     except Survey.DoesNotExist:
         messages.error(request, 'Wybrana ankieta nie istnieje.')
         return HttpResponseRedirect(reverse('home'))
+
+
+@login_required
+def answers(request, survey_id):
+    kwargs = {}
+    kwargs['answers'] = Answer.objects.filter(survey_id=survey_id).order_by('-created')
+    return render(request, 'answers.html', kwargs)
+
+
+@login_required
+def delete_answer(request, survey_id, answer_id):
+    try:
+        survey_answer = Answer.objects.get(id=answer_id)
+        survey_answer.delete()
+        messages.success(request, 'Wybrana odpowiedź została usunięta.')
+    except Answer.DoesNotExist:
+        messages.error(request, 'Wybrane pytanie nie istnieje.')
+    return HttpResponseRedirect(reverse('answers', kwargs={
+        'survey_id': survey_id
+    }))
