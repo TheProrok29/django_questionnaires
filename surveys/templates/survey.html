@@ -44,7 +44,7 @@
         <!-- Menu ankiety -->
         <button id="surveyEditButton" class="btn btn-success">Edytuj</button>
         <a href="{% url 'create-question' survey.id %}" class="btn btn-secondary">Dodaj pytanie</a>
-        <a href="" class="btn btn-info">Zobacz odpowiedzi</a>
+        <a href="{% url 'answers' survey.id %}" class="btn btn-info">Zobacz odpowiedzi</a>
         <a href="{% url 'delete-survey' survey.id %}" class="btn btn-danger">Usuń</a>
     </div>
     <hr>

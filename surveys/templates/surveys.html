@@ -47,7 +47,7 @@
                       <th scope="row">{{ forloop.counter }}</th>
                       <td>{{ survey.name }}</td>
                       <td><small>{{ survey.description }}</small></td>
-                      <td class="text-right"><a href="" class="btn btn-success btn-sm">Edytuj</a></td>
+                      <td class="text-right"><a href="{% url 'survey' survey.id %}" class="btn btn-success btn-sm">Edytuj</a></td>
                     </tr>
                     {% endfor %}
                   </tbody>
