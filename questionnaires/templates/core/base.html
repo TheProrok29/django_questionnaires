@@ -47,7 +47,7 @@
           {% else %}
           <!-- Zalogowany użytkownik -->
           <li class="nav-item">
-            <a class="nav-link" href="">Panel</a>
+            <a class="nav-link" href="{% url 'panel' %}">Panel</a>
           </li>
 
           <li class="nav-item">
@@ -55,7 +55,7 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="">Powiadomienia</a>
+            <a class="nav-link" href="{% url 'notifications' %}">Powiadomienia</a>
           </li>
 
           <li class="nav-item">
